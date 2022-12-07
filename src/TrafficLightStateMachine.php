@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use InvalidArgumentException;
+
 class TrafficLightStateMachine
 {
     /** @var string State. (Exercise 1) This variable name is used in tests. Do not rename.  */
@@ -16,6 +18,16 @@ class TrafficLightStateMachine
     public function can(string $transition): bool
     {
         // TODO write me
+        switch ($transition) {
+            case 'to_red':
+                return $this->state === 'yellow';
+            case 'to_yellow':
+                return $this->state === 'green' || $this->state === 'red';
+            case 'to_green':
+                return $this->state === 'yellow'; // red?
+            default:
+                return false;
+        }
     }
 
     /**
@@ -26,5 +38,22 @@ class TrafficLightStateMachine
     public function apply(string $transition): void
     {
         // TODO write me
+        if (!$this->can($transition)) {
+            throw new InvalidArgumentException('New state is invalid');
+        }
+
+        switch ($transition) {
+            case 'to_red':
+                $this->state = 'red';
+                break;
+            case 'to_yellow':
+                $this->state = 'yellow';
+                break;
+            case 'to_green':
+                $this->state = 'green';
+                break;
+            default:
+                break;
+        }
     }
 }
