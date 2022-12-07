@@ -10,6 +10,7 @@ class User
     private $name;
     private $email;
     private $twitter;
+    private $notified_at;
 
     /**
      * Convert a user to array (used when we store user in database)
@@ -21,6 +22,7 @@ class User
             'name' => $this->name,
             'email' => $this->email,
             'twitter' => $this->twitter,
+            'notified_at' => $this->notified_at,
         ];
     }
 
@@ -35,6 +37,7 @@ class User
         $user->name = $data['name'] ?? null;
         $user->email = $data['email'] ?? null;
         $user->twitter = $data['twitter'] ?? null;
+        $user->notified_at = $data['notified_at'] ?? null;
 
         return $user;
     }
@@ -73,5 +76,15 @@ class User
     public function setTwitter(?string $twitter)
     {
         $this->twitter = $twitter;
+    }
+
+    public function getNotifiedAt(): ?int
+    {
+        return $this->notified_at;
+    }
+
+    public function setNotifiedAt(?int $notifiedAt)
+    {
+        $this->notified_at = $notifiedAt;
     }
 }

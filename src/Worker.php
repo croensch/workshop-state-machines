@@ -24,6 +24,8 @@ class Worker
 
         foreach ($users as $user) {
             // TODO Create a new StateMachine() object and call ->start()
+            $sm = new \App\StateMachine\StateMachine($this->mailer, $user);
+            $sm->start(new \App\StateMachine\State\AddYourName());
             // No DI required, just create a new object.
         }
 

@@ -8,15 +8,15 @@ use App\Service\MailerService;
 use App\StateMachine\StateMachineInterface;
 use App\WorldClock;
 
-class AddYourName implements StateInterface
+class AddYourTwitter implements StateInterface
 {
     public function send(StateMachineInterface $stateMachine, MailerService $mailer): int
     {
         $user = $stateMachine->getUser();
 
         // TODO Do some conditional checks
-        if ($user->getName() !== null && $user->getName() !== "") {
-            $stateMachine->setState(new AddYourTwitter());
+        if ($user->getTwitter() !== null && $user->getTwitter() !== "") {
+            $stateMachine->setState(new Welcome());
             return StateInterface::CONTINUE;
         }
         if ($user->getNotifiedAt() !== null && $user->getNotifiedAt() < WorldClock::getDateTimeRelativeFakeTime('+1 day')->getTimestamp()) {
@@ -24,7 +24,7 @@ class AddYourName implements StateInterface
             return StateInterface::CONTINUE;
         }
         // Optional: send an email
-        $mailer->sendEmail($user, 'Hello! Add your Name, please.');
+        $mailer->sendEmail($user, sprintf('Hi %s! Add your Twitter, please.', $user->getName()));
         $user->setNotifiedAt(WorldClock::getCurrentTimestamp());
         // Optional: Move to a new state
         $stateMachine->setState(new Wait());

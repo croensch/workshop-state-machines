@@ -23,7 +23,12 @@ class StateMachine implements StateMachineInterface
     public function start(StateInterface $state): bool
     {
         // TODO Implement me
+        $this->setState($state);
         // Run states until StateInterface::STOP
+        do {
+            $signal = $this->state->send($this, $this->mailer);
+        } while ($signal !== StateInterface::STOP);
+        return true;
     }
 
     public function getUser(): User
